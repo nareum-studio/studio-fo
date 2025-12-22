@@ -4,6 +4,7 @@ import { useState } from 'react'
 import MobileMenu from './MobileMenu'
 import Link from 'next/link'
 import { FiMenu } from 'react-icons/fi'
+import { useScrollDirection } from '@/hooks/useScrollDirection'
 
 const NAV = [
   { name: 'HOME', href: '/' },
@@ -20,9 +21,17 @@ const NAV = [
 export default function Header() {
   const [open, setOpen] = useState(false)
 
+  const scrollDirection = useScrollDirection()
+
   return (
     <>
-      <header className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur z-2 border-b border-gray-200">
+      <header
+        className={`
+          fixed top-0 left-0 w-full bg-white/70 backdrop-blur z-50 border-b border-gray-200
+          transition-transform duration-300
+          ${scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'}
+        `}
+      >
         <div className="mx-auto flex items-center justify-between px-4 py-8 md:max-w-6xl">
           <Link href="/" className="text-xl font-bold">
             Nareum Studio

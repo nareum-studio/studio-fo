@@ -38,6 +38,7 @@ export default function MobileMenu({ open, onClose }: Props) {
             key={item.name}
             href={item.href}
             onClick={onClose}
+            target={item.target}
             className="hover:opacity-70"
           >
             {item.name}
