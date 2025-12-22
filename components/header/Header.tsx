@@ -33,7 +33,7 @@ export default function Header() {
         `}
       >
         <div className="mx-auto flex items-center justify-between px-4 py-8 md:max-w-6xl">
-          <Link href="/" className="text-xl font-bold">
+          <Link href="/" className="text-xl font-bold font-French">
             Nareum Studio
           </Link>
 

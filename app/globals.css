@@ -1,5 +1,11 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
+
+@font-face {
+  font-family: 'French';
+  src: url('/fonts/French/Poppins-Light.ttf') format('truetype');
+  font-display: swap;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,5 +125,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'French', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 }
