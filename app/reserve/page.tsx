@@ -10,13 +10,16 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { cn } from '@/lib/utils'
 import { ChevronDownIcon } from 'lucide-react'
 import { Label } from '@/components/ui/label'
 
 export default function Reserve() {
   const [date, setDate] = useState<Date | undefined>(undefined)
   const [open, setOpen] = useState(false)
+  const [time, setTime] = useState<string | undefined>(undefined)
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTime(e.target.value)
+  }
 
   return (
     <div className="flex flex-col items-center">
@@ -26,7 +29,7 @@ export default function Reserve() {
         <Input type="email" placeholder="Email" />
         <Input type="tel" placeholder="Phone" />
         <div className="flex gap-4">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 flex-1">
             <Label htmlFor="date-picker" className="px-1">
               Date
             </Label>
@@ -57,15 +60,17 @@ export default function Reserve() {
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 flex-1">
             <Label htmlFor="time-picker" className="px-1">
               Time
             </Label>
             <Input
               type="time"
               id="time-picker"
-              step="1"
-              defaultValue="10:30:00"
+              step="60"
+              value={time}
+              defaultValue="22:30"
+              onChange={handleTimeChange}
               className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
           </div>

@@ -29,7 +29,7 @@ export default function MobileMenu({ open, onClose }: Props) {
         ${open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full'}
       `}
     >
-      <button className="absolute top-8 right-4 text-3xl" onClick={onClose}>
+      <button className="absolute top-9 right-6 text-3xl" onClick={onClose}>
         <FiX className="text-2xl" />
       </button>
       <nav className="flex flex-col gap-10 text-2xl font-semibold">

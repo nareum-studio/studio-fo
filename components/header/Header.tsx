@@ -52,9 +52,9 @@ export default function Header() {
           ${hideHeader ? '-translate-y-full' : 'translate-y-0'}
         `}
       >
-        <div className="mx-auto flex items-center justify-between px-4 py-8 md:max-w-6xl">
+        <div className="mx-auto flex items-center justify-between px-6 py-8 md:max-w-6xl">
           <Link href="/" className="text-xl font-bold font-French">
-            Nareum Studio
+            NareumDaumm Studio
           </Link>
 
           <nav className="hidden md:flex gap-8 text-sm font-medium">
