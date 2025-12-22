@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import MobileMenu from './MobileMenu'
 import Link from 'next/link'
 import { FiMenu } from 'react-icons/fi'
@@ -20,8 +20,28 @@ const NAV = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
-
+  const [scrollY, setScrollY] = useState(0)
   const scrollDirection = useScrollDirection()
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [open])
+
+  const hideHeader = scrollDirection === 'down' && scrollY > 80 // ← 조건 추가 포인트!
 
   return (
     <>
@@ -29,7 +49,7 @@ export default function Header() {
         className={`
           fixed top-0 left-0 w-full bg-white/70 backdrop-blur z-50 border-b border-gray-200
           transition-transform duration-300
-          ${scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'}
+          ${hideHeader ? '-translate-y-full' : 'translate-y-0'}
         `}
       >
         <div className="mx-auto flex items-center justify-between px-4 py-8 md:max-w-6xl">
