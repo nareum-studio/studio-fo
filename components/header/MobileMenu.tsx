@@ -12,7 +12,7 @@ const menus = [
   { name: 'HOME', href: '/' },
   { name: 'ABOUT', href: '/about' },
   { name: 'PORTFOLIO', href: '/portfolio' },
-  { name: 'RESERVE', href: '/reserve' },
+  { name: 'RESERVE', href: 'https://pf.kakao.com/_wnfxbn', target: '_blank' },
   {
     name: 'INSTAGRAM',
     href: 'https://www.instagram.com/nareumdaumm_studio?igsh=MW50b3Zyb2h6aDhheA==',
