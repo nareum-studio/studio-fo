@@ -57,13 +57,13 @@ export default function Header() {
             NareumDaumm Studio
           </Link>
 
-          <nav className="hidden md:flex gap-8 text-sm font-medium">
+          <nav className="hidden md:flex gap-8 text-sm font-bold text-gray-500">
             {NAV.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 target={item.target}
-                className="hover:text-gray-700 transition"
+                className="hover:text-gray-800 transition"
               >
                 {item.name}
               </Link>
