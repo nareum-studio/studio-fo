@@ -1,11 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
-
-@font-face {
-  font-family: 'French';
-  src: url('/fonts/French/Poppins-Light.ttf') format('truetype');
-  font-display: swap;
-}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -125,6 +120,12 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'French', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-family:
+      'Playfair Display',
+      'French',
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      sans-serif;
   }
 }

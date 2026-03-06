@@ -16,7 +16,7 @@ export default function UsersLayout({
   return (
     <>
       <Header />
-      <main className="pt-24 px-10">{children}</main>
+      <main className="md:pt-30 md:px-8 pt-20 px-4">{children}</main>
       <Footer />
     </>
   )

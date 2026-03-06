@@ -1,29 +1,12 @@
-import Image from 'next/image'
-
-const images = [
-  { src: '/image1.jpg', alt: 'img1' },
-  { src: '/image1.jpg', alt: 'img2' },
-  { src: '/image1.jpg', alt: 'img3' },
-  { src: '/image1.jpg', alt: 'img4' },
-  { src: '/image1.jpg', alt: 'img5' },
-  { src: '/image1.jpg', alt: 'img6' },
-  { src: '/image1.jpg', alt: 'img7' },
-  { src: '/image1.jpg', alt: 'img8' },
-  { src: '/image1.jpg', alt: 'img9' },
-]
-
-export default function Home() {
+export default function About() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {images.map((image) => (
-        <Image
-          key={image.alt}
-          src={image.src}
-          alt={image.alt}
-          width={1000}
-          height={1000}
-        />
-      ))}
+    <div>
+      <div className="text-4xl font-bold text-center m-10">About</div>
+      <span className="font-bold text-2xl mb-2 block">NareumDaumm Studio</span>
+      <p className="text-sm">
+        <span>나만의 아름다움을 담아드리는 나름다움입니다</span> <br />
+        <span>배우프로필|키즈프로필|소장용프로필|커플사진</span>
+      </p>
     </div>
   )
 }
