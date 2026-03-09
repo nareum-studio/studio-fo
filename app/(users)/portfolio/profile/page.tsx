@@ -7,7 +7,7 @@ export default function Profile() {
       {profileImages.map((image) => (
         <Image
           key={image.alt}
-          src={image.src}
+          src={image.url}
           alt={image.alt}
           width={1000}
           height={1000}

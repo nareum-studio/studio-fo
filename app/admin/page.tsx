@@ -1,39 +1,37 @@
 'use client'
 
 import { useState } from 'react'
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { GalleryManager } from '../../components/admin/GalleryManager'
+import { IntroEditor } from '../../components/admin/IntroEditor'
+import { GalleryKey, SavePayload } from '@/public/types/type'
 
 export default function AdminPage() {
   const [intro, setIntro] = useState('')
-  const [image, setImage] = useState<File | null>(null)
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
 
-  const handleSave = (type: 'intro' | 'photo') => {
-    if (type === 'intro') {
-      console.log('소개글 저장:', intro)
-      setMessage('소개글이 성공적으로 저장되었습니다.')
-    } else {
-      console.log('이미지 저장:', image)
-      setMessage('사진이 성공적으로 저장되었습니다.')
-    }
-
+  const handleIntroSave = () => {
+    console.log('소개글 저장:', intro)
+    setMessage('소개글이 성공적으로 저장되었습니다.')
     setOpen(true)
+  }
+
+  const handleSave = (section: GalleryKey, payload: SavePayload) => {
+    console.log('section:', section)
+    console.log('새 이미지:', payload.newImages)
+    console.log('삭제 이미지:', payload.deleteImages)
   }
 
   return (
@@ -53,13 +51,11 @@ export default function AdminPage() {
               <CardTitle>소개글 수정</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Textarea
-                placeholder="소개글을 입력하세요"
-                value={intro}
-                onChange={(e) => setIntro(e.target.value)}
-                className="min-h-[200px]"
+              <IntroEditor
+                intro={intro}
+                onChange={setIntro}
+                onSave={handleIntroSave}
               />
-              <Button onClick={() => handleSave('intro')}>저장</Button>
             </CardContent>
           </Card>
         </TabsContent>
@@ -70,15 +66,8 @@ export default function AdminPage() {
             <CardHeader>
               <CardTitle>사진 수정</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  setImage(e.target.files ? e.target.files[0] : null)
-                }
-              />
-              <Button onClick={() => handleSave('photo')}>저장</Button>
+            <CardContent className="space-y-6">
+              <GalleryManager onSave={handleSave} />
             </CardContent>
           </Card>
         </TabsContent>
