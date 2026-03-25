@@ -7,6 +7,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
+const AUTH_LOGIN_URL =
+  process.env.NEXT_PUBLIC_AUTH_LOGIN_URL ??
+  'http://54.180.79.241:8081/auth/login'
+
 export default function LoginPage() {
   const router = useRouter()
 
@@ -16,17 +20,24 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
 
-    // 🔥 실제로는 API 호출
-    if (id === 'admin' && password === '1234') {
-      localStorage.setItem('role', 'admin') // ✅ 권한 저장
-      router.push('/admin')
-    } else {
-      alert('아이디 또는 비밀번호가 올바르지 않습니다.')
+    const res = await fetch(AUTH_LOGIN_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, password }),
+    })
+
+    const data = await res.json()
+
+    if (!res.ok) {
+      alert(data.message || '로그인 실패')
+      return
     }
 
-    setLoading(false)
+    console.log(data)
+
+    // localStorage.setItem('token', data.token)
+    router.push('/admin')
   }
 
   return (
@@ -39,7 +50,7 @@ export default function LoginPage() {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-xl">
+              <Label htmlFor="id" className="text-xl">
                 아이디
               </Label>
               <Input
