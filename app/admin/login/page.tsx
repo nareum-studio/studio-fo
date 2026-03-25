@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
 const AUTH_LOGIN_URL =
-  process.env.NEXT_PUBLIC_AUTH_LOGIN_URL ??
-  'http://54.180.79.241:8081/auth/login'
+  process.env.NEXT_PUBLIC_AUTH_LOGIN_URL ?? '/api/auth/login'
 
 export default function LoginPage() {
   const router = useRouter()
