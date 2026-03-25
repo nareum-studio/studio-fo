@@ -7,9 +7,6 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 
-const AUTH_LOGIN_URL =
-  process.env.NEXT_PUBLIC_AUTH_LOGIN_URL ?? '/api/auth/login'
-
 export default function LoginPage() {
   const router = useRouter()
 
@@ -20,13 +17,20 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    const res = await fetch(AUTH_LOGIN_URL, {
+    const res = await fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id, password }),
     })
 
-    const data = await res.json()
+    const text = await res.text()
+
+    let data
+    try {
+      data = JSON.parse(text)
+    } catch {
+      data = { message: text }
+    }
 
     if (!res.ok) {
       alert(data.message || '로그인 실패')
@@ -34,8 +38,6 @@ export default function LoginPage() {
     }
 
     console.log(data)
-
-    // localStorage.setItem('token', data.token)
     router.push('/admin')
   }
 
