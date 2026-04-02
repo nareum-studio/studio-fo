@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
       },
     ]
   },
+
+  images: {
+    domains: ['nareum-bucket.s3.ap-northeast-2.amazonaws.com'],
+  },
 }
 
 export default nextConfig

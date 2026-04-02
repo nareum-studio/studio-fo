@@ -1,20 +1,40 @@
+export type GalleryKey = 'PROFILE' | 'KIDS' | 'BALLET'
+
+// ── API 응답 타입 ─────────────────────────────────────────
+export type PhotoItem = {
+  id: number
+  category: GalleryKey
+  originalName: string
+  url: string
+  extension: string
+  createdAt: string
+  updatedAt: string | null
+}
+
+export type PhotoListResponse = {
+  message: string
+  data: PhotoItem[]
+}
+
+// ── 클라이언트 상태 타입 ──────────────────────────────────
+/**
+ * serverId  있음 → 서버에서 온 기존 이미지
+ * file      있음 → 로컬에서 새로 추가한 이미지 (blob URL)
+ */
 export type ImageItem = {
-  id?: string
+  serverId?: number
   url: string
   file?: File
-  isNew: boolean
 }
 
 export type SavePayload = {
   newImages: File[]
-  deleteImages: string[]
+  deleteImageIds: number[]
 }
-
-export type GalleryKey = 'PROFILE' | 'KIDS' | 'BALLET'
 
 export type ImageManager = {
   images: ImageItem[]
-  deletedImages: string[]
+  deletedIds: number[]
   addFiles: (fileList: FileList | null) => void
   removeImage: (index: number) => void
 }

@@ -15,9 +15,11 @@ import {
 } from '@/components/ui/alert-dialog'
 import { GalleryManager } from '../../components/admin/GalleryManager'
 import { IntroEditor } from '../../components/admin/IntroEditor'
+import { useGallery } from '@/contexts/GalleryContext'
 import { GalleryKey, SavePayload } from '@/public/types/type'
 
 export default function AdminPage() {
+  const { refetch } = useGallery()
   const [intro, setIntro] = useState('')
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
@@ -29,24 +31,19 @@ export default function AdminPage() {
   }
 
   const handleSave = async (section: GalleryKey, payload: SavePayload) => {
-    console.log('section:', section)
-    console.log('newImages:', payload.newImages)
-    console.log('deleteImages:', payload.deleteImages)
-
     const formData = new FormData()
 
     payload.newImages.forEach((file) => {
-      formData.append('files', file)
+      formData.append('newImages', file)
     })
 
-    // formData.append('deleteImages', JSON.stringify(payload.deleteImages))
+    payload.deleteImageIds.forEach((id) => {
+      formData.append('deleteImages', String(id))
+    })
 
-    // const token =
-    //   typeof window !== 'undefined' ? localStorage.getItem('token') : null
-
-    const res = await fetch(`/file/upload?category=${section}`, {
+    const res = await fetch(`/image/update?category=${section}`, {
       method: 'POST',
-      // headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      credentials: 'include',
       body: formData,
     })
 
@@ -57,6 +54,7 @@ export default function AdminPage() {
       return
     }
 
+    await refetch(section)
     setMessage('사진이 저장되었습니다.')
     setOpen(true)
   }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 import { Input } from '@/components/ui/input'
@@ -13,9 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { fetchPhotoList } from '@/api/fetchPhotoList'
-import { GalleryKey, SavePayload, SectionConfig } from '@/public/types/type'
+import { useGalleryCategory } from '@/contexts/GalleryContext'
 import { useImageManager } from '@/hooks/useImageManager'
+import { GalleryKey, SavePayload, SectionConfig } from '@/public/types/type'
 
 type Props = {
   onSave: (section: GalleryKey, payload: SavePayload) => void
@@ -24,19 +24,13 @@ type Props = {
 export function GalleryManager({ onSave }: Props) {
   const [category, setCategory] = useState<GalleryKey>('PROFILE')
 
-  const [profileUrls, setProfileUrls] = useState<string[]>([])
-  const [kidsUrls, setKidsUrls] = useState<string[]>([])
-  const [balletUrls, setBalletUrls] = useState<string[]>([])
+  const profilePhotos = useGalleryCategory('PROFILE')
+  const kidsPhotos = useGalleryCategory('KIDS')
+  const balletPhotos = useGalleryCategory('BALLET')
 
-  useEffect(() => {
-    fetchPhotoList('PROFILE').then(setProfileUrls).catch(console.error)
-    fetchPhotoList('KIDS').then(setKidsUrls).catch(console.error)
-    fetchPhotoList('BALLET').then(setBalletUrls).catch(console.error)
-  }, [])
-
-  const profile = useImageManager(profileUrls)
-  const kids = useImageManager(kidsUrls)
-  const ballet = useImageManager(balletUrls)
+  const profile = useImageManager(profilePhotos)
+  const kids = useImageManager(kidsPhotos)
+  const ballet = useImageManager(balletPhotos)
 
   const sections: SectionConfig[] = [
     { key: 'PROFILE', title: 'PROFILE', manager: profile },
@@ -52,12 +46,14 @@ export function GalleryManager({ onSave }: Props) {
   }
 
   const handleSaveClick = () => {
-    onSave(key, {
-      newImages: manager.images
-        .filter((img) => img.isNew)
-        .map((img) => img.file!),
-      deleteImages: manager.deletedImages,
-    })
+    const newImages = manager.images
+      .filter((img) => img.file !== undefined)
+      .map((img) => img.file!)
+
+    console.log('newImages', newImages)
+    console.log('deleteImageIds', manager.deletedIds)
+
+    onSave(key, { newImages, deleteImageIds: manager.deletedIds })
   }
 
   return (
@@ -111,7 +107,7 @@ export function GalleryManager({ onSave }: Props) {
         <div className="grid grid-cols-2 gap-3 rounded-lg border bg-muted/20 p-3 sm:grid-cols-4 md:grid-cols-7">
           {manager.images.map((img, idx) => (
             <div
-              key={img.id}
+              key={img.serverId ?? img.url}
               className="relative overflow-hidden rounded-md border bg-white"
             >
               <button

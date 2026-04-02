@@ -1,65 +1,62 @@
 import { useEffect, useState } from 'react'
-import { ImageItem } from '@/public/types/type'
 
-export function useImageManager(initialImages: string[] = []) {
+import { ImageItem, PhotoItem } from '@/public/types/type'
+
+const toItems = (photos: PhotoItem[]): ImageItem[] =>
+  photos.map((p) => ({ serverId: p.id, url: p.url }))
+
+export function useImageManager(initialPhotos: PhotoItem[] = []) {
+  const [prevPhotos, setPrevPhotos] = useState(initialPhotos)
   const [images, setImages] = useState<ImageItem[]>(() =>
-    initialImages.map((url) => ({
-      id: crypto.randomUUID(),
-      url,
-      isNew: false,
-    })),
+    toItems(initialPhotos),
   )
+  const [deletedIds, setDeletedIds] = useState<number[]>([])
 
-  const [deletedImages, setDeletedImages] = useState<string[]>([])
+  // API 응답이 도착해 initialPhotos가 변경되면 동기화
+  if (prevPhotos !== initialPhotos) {
+    setPrevPhotos(initialPhotos)
+    setImages(toItems(initialPhotos))
+    setDeletedIds([])
+  }
 
   const addFiles = (fileList: FileList | null) => {
     if (!fileList) return
 
-    const newImages: ImageItem[] = Array.from(fileList).map((file) => ({
-      id: crypto.randomUUID(),
+    const newItems: ImageItem[] = Array.from(fileList).map((file) => ({
       url: URL.createObjectURL(file),
       file,
-      isNew: true,
     }))
 
-    setImages((prev) => [...prev, ...newImages])
+    setImages((prev) => [...prev, ...newItems])
   }
 
   const removeImage = (index: number) => {
     const target = images[index]
-
     if (!target) return
 
-    // 기존 이미지 삭제 추적
-    if (!target.isNew) {
-      setDeletedImages((prev) => {
-        if (prev.includes(target.url)) return prev
-        return [...prev, target.url]
-      })
+    // 서버 이미지 → 삭제 ID 추적
+    if (target.serverId !== undefined) {
+      setDeletedIds((prev) =>
+        prev.includes(target.serverId!) ? prev : [...prev, target.serverId!],
+      )
     }
 
-    // 새 이미지 preview cleanup
-    if (target.isNew) {
+    // 로컬 blob URL → 메모리 해제
+    if (target.file) {
       URL.revokeObjectURL(target.url)
     }
 
     setImages((prev) => prev.filter((_, i) => i !== index))
   }
 
+  // 언마운트 시 blob URL 정리
   useEffect(() => {
     return () => {
       images.forEach((img) => {
-        if (img.isNew) {
-          URL.revokeObjectURL(img.url)
-        }
+        if (img.file) URL.revokeObjectURL(img.url)
       })
     }
   }, [images])
 
-  return {
-    images,
-    deletedImages,
-    addFiles,
-    removeImage,
-  }
+  return { images, deletedIds, addFiles, removeImage }
 }

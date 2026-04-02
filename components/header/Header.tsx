@@ -42,7 +42,7 @@ export default function Header() {
         `}
       >
         <div className="mx-auto flex items-center justify-between px-6 py-8 md:max-w-6xl h-full">
-          <Link href="/about" className="text-xl font-bold font-French">
+          <Link href="/" className="text-xl font-bold font-French">
             NareumDaumm Studio
           </Link>
           <nav className="hidden md:flex text-sm font-bold text-gray-500">
