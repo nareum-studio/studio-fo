@@ -12,21 +12,6 @@ export function useImageManager(initialImages: string[] = []) {
 
   const [deletedImages, setDeletedImages] = useState<string[]>([])
 
-  // API 응답이 도착해 initialImages가 빈 배열 → 실제 배열로 바뀔 때 동기화
-  const prevKey = initialImages.join('\u0000')
-  useEffect(() => {
-    setImages(
-      initialImages.map((url) => ({
-        id: crypto.randomUUID(),
-        url,
-        isNew: false,
-      })),
-    )
-    setDeletedImages([])
-    // prevKey 가 바뀔 때만 실행
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [prevKey])
-
   const addFiles = (fileList: FileList | null) => {
     if (!fileList) return
 
