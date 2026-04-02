@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { setAdminSession } from '@/lib/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -16,31 +17,41 @@ export default function LoginPage() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
 
-    const res = await fetch('/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, password }),
-    })
-
-    const text = await res.text()
-
-    console.log('text:', text)
-
-    let data
     try {
-      data = JSON.parse(text)
+      const res = await fetch('/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ id, password }),
+      })
+
+      const text = await res.text()
+
+      console.log('text:', text)
+
+      let data: { message?: string }
+      try {
+        data = JSON.parse(text) as { message?: string }
+      } catch {
+        data = { message: text }
+      }
+
+      if (!res.ok) {
+        alert(data.message || '로그인 실패')
+        return
+      }
+
+      console.log(data)
+      // HttpOnly JSESSIONID는 document.cookie에 안 보이므로, 클라이언트 가드용 플래그
+      setAdminSession()
+      router.push('/admin')
     } catch {
-      data = { message: text }
+      alert('네트워크 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
     }
-
-    if (!res.ok) {
-      alert(data.message || '로그인 실패')
-      return
-    }
-
-    console.log(data)
-    router.push('/admin')
   }
 
   return (
