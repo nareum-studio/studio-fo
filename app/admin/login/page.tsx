@@ -25,6 +25,8 @@ export default function LoginPage() {
 
     const text = await res.text()
 
+    console.log('text:', text)
+
     let data
     try {
       data = JSON.parse(text)

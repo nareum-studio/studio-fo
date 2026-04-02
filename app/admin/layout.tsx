@@ -10,13 +10,13 @@ export default function AdminLayout({
 }) {
   const router = useRouter()
 
-  useEffect(() => {
-    const role = localStorage.getItem('role')
+  // useEffect(() => {
+  //   const role = localStorage.getItem('role')
 
-    if (role !== 'admin') {
-      router.replace('/admin/login')
-    }
-  }, [router])
+  //   if (role !== 'admin') {
+  //     router.replace('/admin/login')
+  //   }
+  // }, [router])
 
   return <>{children}</>
 }

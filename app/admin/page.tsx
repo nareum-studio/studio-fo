@@ -28,14 +28,41 @@ export default function AdminPage() {
     setOpen(true)
   }
 
-  const handleSave = (section: GalleryKey, payload: SavePayload) => {
+  const handleSave = async (section: GalleryKey, payload: SavePayload) => {
     console.log('section:', section)
-    console.log('새 이미지:', payload.newImages)
-    console.log('삭제 이미지:', payload.deleteImages)
+    console.log('newImages:', payload.newImages)
+    console.log('deleteImages:', payload.deleteImages)
+
+    const formData = new FormData()
+
+    payload.newImages.forEach((file) => {
+      formData.append('files', file)
+    })
+
+    // formData.append('deleteImages', JSON.stringify(payload.deleteImages))
+
+    // const token =
+    //   typeof window !== 'undefined' ? localStorage.getItem('token') : null
+
+    const res = await fetch(`/file/upload?category=${section}`, {
+      method: 'POST',
+      // headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: formData,
+    })
+
+    if (!res.ok) {
+      const text = await res.text()
+      setMessage(text || `저장 실패 (${res.status})`)
+      setOpen(true)
+      return
+    }
+
+    setMessage('사진이 저장되었습니다.')
+    setOpen(true)
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-10">
+    <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">관리자 페이지</h1>
 
       <Tabs defaultValue="intro" className="w-full">

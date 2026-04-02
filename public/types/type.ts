@@ -10,7 +10,7 @@ export type SavePayload = {
   deleteImages: string[]
 }
 
-export type GalleryKey = 'profile' | 'kids' | 'ballet'
+export type GalleryKey = 'PROFILE' | 'KIDS' | 'BALLET'
 
 export type ImageManager = {
   images: ImageItem[]
