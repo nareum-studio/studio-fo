@@ -15,11 +15,9 @@ import {
 } from '@/components/ui/alert-dialog'
 import { GalleryManager } from '../../components/admin/GalleryManager'
 import { IntroEditor } from '../../components/admin/IntroEditor'
-import { useGallery } from '@/contexts/GalleryContext'
 import { GalleryKey, SavePayload } from '@/public/types/type'
 
 export default function AdminPage() {
-  const { refetch } = useGallery()
   const [intro, setIntro] = useState('')
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
@@ -54,7 +52,6 @@ export default function AdminPage() {
       return
     }
 
-    await refetch(section)
     setMessage('사진이 저장되었습니다.')
     setOpen(true)
   }

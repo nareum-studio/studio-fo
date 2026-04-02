@@ -1,20 +1,17 @@
-'use client'
-
+import { balletImages } from '@/public/data/profile'
 import Image from 'next/image'
-import { useGalleryCategory } from '@/contexts/GalleryContext'
 
 export default function Ballet() {
-  const balletPhotos = useGalleryCategory('BALLET')
-
   return (
     <div className="md:grid md:grid-cols-3 flex flex-col gap-4">
-      {balletPhotos.map((photo) => (
+      {balletImages.map((image) => (
         <Image
-          key={photo.id}
-          src={photo.url}
-          alt={photo.originalName}
+          key={image.alt}
+          src={image.url}
+          alt={image.alt}
           width={1000}
           height={1000}
+          className="w-full h-full object-cover"
         />
       ))}
     </div>

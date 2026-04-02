@@ -1,18 +1,14 @@
-'use client'
-
-import { useGalleryCategory } from '@/contexts/GalleryContext'
+import { profileImages } from '@/public/data/profile'
 import Image from 'next/image'
 
 export default function Profile() {
-  const profilePhotos = useGalleryCategory('PROFILE')
-
   return (
     <div className="md:grid md:grid-cols-3 flex flex-col gap-4">
-      {profilePhotos.map((photo) => (
+      {profileImages.map((image) => (
         <Image
-          key={photo.id}
-          src={photo.url}
-          alt={photo.originalName}
+          key={image.alt}
+          src={image.url}
+          alt={image.alt}
           width={1000}
           height={1000}
           className="w-full h-full object-cover"

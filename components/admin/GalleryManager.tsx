@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { Input } from '@/components/ui/input'
@@ -13,9 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useGalleryCategory } from '@/contexts/GalleryContext'
+import { fetchPhotoList } from '@/api/fetchPhotoList'
 import { useImageManager } from '@/hooks/useImageManager'
-import { GalleryKey, SavePayload, SectionConfig } from '@/public/types/type'
+import { GalleryKey, PhotoItem, SavePayload, SectionConfig } from '@/public/types/type'
 
 type Props = {
   onSave: (section: GalleryKey, payload: SavePayload) => void
@@ -24,9 +24,15 @@ type Props = {
 export function GalleryManager({ onSave }: Props) {
   const [category, setCategory] = useState<GalleryKey>('PROFILE')
 
-  const profilePhotos = useGalleryCategory('PROFILE')
-  const kidsPhotos = useGalleryCategory('KIDS')
-  const balletPhotos = useGalleryCategory('BALLET')
+  const [profilePhotos, setProfilePhotos] = useState<PhotoItem[]>([])
+  const [kidsPhotos, setKidsPhotos] = useState<PhotoItem[]>([])
+  const [balletPhotos, setBalletPhotos] = useState<PhotoItem[]>([])
+
+  useEffect(() => {
+    fetchPhotoList('PROFILE').then(setProfilePhotos).catch(console.error)
+    fetchPhotoList('KIDS').then(setKidsPhotos).catch(console.error)
+    fetchPhotoList('BALLET').then(setBalletPhotos).catch(console.error)
+  }, [])
 
   const profile = useImageManager(profilePhotos)
   const kids = useImageManager(kidsPhotos)
