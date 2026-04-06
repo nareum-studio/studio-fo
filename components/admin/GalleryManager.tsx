@@ -13,9 +13,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { fetchPhotoList } from '@/api/fetchPhotoList'
+import { fetchPhotoList } from '@/api/admin/fetchPhotoList'
 import { useImageManager } from '@/hooks/useImageManager'
-import { GalleryKey, PhotoItem, SavePayload, SectionConfig } from '@/public/types/type'
+import {
+  GalleryKey,
+  PhotoItem,
+  SavePayload,
+  SectionConfig,
+} from '@/public/types/type'
 
 type Props = {
   onSave: (section: GalleryKey, payload: SavePayload) => void

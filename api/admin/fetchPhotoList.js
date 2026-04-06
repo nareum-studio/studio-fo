@@ -3,7 +3,7 @@
  * @returns {Promise<import('@/public/types/type').PhotoItem[]>}
  */
 export const fetchPhotoList = async (category) => {
-  const res = await fetch(`/image/list?category=${category}`, {
+  const res = await fetch(`/admin-api/image/list?category=${category}`, {
     method: 'GET',
     credentials: 'include',
   })

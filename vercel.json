@@ -1,8 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/admin-api/:path*",
       "destination": "http://54.180.79.241:8081/:path*"
+    },
+    {
+      "source": "/user-api/:path*",
+      "destination": "http://54.180.79.241:8082/:path*"
     }
   ]
 }

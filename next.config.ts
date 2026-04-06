@@ -4,9 +4,15 @@ const nextConfig: NextConfig = {
   /* config options here */
   async rewrites() {
     return [
+      // 관리자 API
       {
-        source: '/:path*',
+        source: '/admin-api/:path*',
         destination: 'http://54.180.79.241:8081/:path*',
+      },
+      // 사용자 API
+      {
+        source: '/user-api/:path*',
+        destination: 'http://54.180.79.241:8082/:path*',
       },
     ]
   },

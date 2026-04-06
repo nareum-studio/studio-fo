@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { GalleryManager } from '../../components/admin/GalleryManager'
 import { IntroEditor } from '../../components/admin/IntroEditor'
+import { updatePhotos } from '@/api/admin/updatePhotos'
 import { GalleryKey, SavePayload } from '@/public/types/type'
 
 export default function AdminPage() {
@@ -29,25 +30,10 @@ export default function AdminPage() {
   }
 
   const handleSave = async (section: GalleryKey, payload: SavePayload) => {
-    const formData = new FormData()
+    const { ok, message } = await updatePhotos(section, payload)
 
-    payload.newImages.forEach((file) => {
-      formData.append('newImages', file)
-    })
-
-    payload.deleteImageIds.forEach((id) => {
-      formData.append('deleteImages', String(id))
-    })
-
-    const res = await fetch(`/image/update?category=${section}`, {
-      method: 'POST',
-      credentials: 'include',
-      body: formData,
-    })
-
-    if (!res.ok) {
-      const text = await res.text()
-      setMessage(text || `저장 실패 (${res.status})`)
+    if (!ok) {
+      setMessage(message || `저장 실패`)
       setOpen(true)
       return
     }
