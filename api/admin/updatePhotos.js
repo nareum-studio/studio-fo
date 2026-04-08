@@ -1,7 +1,9 @@
+import { adminFetch } from '@/lib/adminFetch'
+
 /**
  * @param {'PROFILE' | 'KIDS' | 'BALLET'} category
  * @param {{ newImages: File[], deleteImageIds: number[] }} payload
- * @returns {Promise<{ ok: boolean, message?: string }>}
+ * @returns {Promise<{ ok: boolean, status: number, message?: string }>}
  */
 export const updatePhotos = async (category, { newImages, deleteImageIds }) => {
   const formData = new FormData()
@@ -14,13 +16,16 @@ export const updatePhotos = async (category, { newImages, deleteImageIds }) => {
     formData.append('deleteImages', String(id))
   })
 
-  const res = await fetch(`/admin-api/image/update?category=${category}`, {
+  const res = await adminFetch(`/admin-api/image/update?category=${category}`, {
     method: 'POST',
-    credentials: 'include',
     body: formData,
   })
 
   const text = await res.text()
 
-  return { ok: res.ok, message: text || undefined }
+  return {
+    ok: res.ok,
+    status: res.status,
+    message: text || undefined,
+  }
 }

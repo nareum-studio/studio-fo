@@ -68,8 +68,8 @@ export default function AdminPage() {
           </Card>
         </TabsContent>
 
-        {/* 사진 수정 */}
-        <TabsContent value="photo">
+        {/* 사진 수정 — forceMount로 탭 이동 시 언마운트 방지 */}
+        <TabsContent value="photo" forceMount className="data-[state=inactive]:hidden">
           <Card>
             <CardHeader>
               <CardTitle>사진 수정</CardTitle>

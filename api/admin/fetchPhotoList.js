@@ -1,12 +1,13 @@
+import { adminFetch } from '@/lib/adminFetch'
+
 /**
  * @param {'PROFILE' | 'KIDS' | 'BALLET'} category
  * @returns {Promise<import('@/public/types/type').PhotoItem[]>}
  */
 export const fetchPhotoList = async (category) => {
-  const res = await fetch(`/admin-api/image/list?category=${category}`, {
-    method: 'GET',
-    credentials: 'include',
-  })
+  if (typeof window === 'undefined') return []
+
+  const res = await adminFetch(`/admin-api/image/list?category=${category}`)
 
   if (!res.ok) {
     const text = await res.text()

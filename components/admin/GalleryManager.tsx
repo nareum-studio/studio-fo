@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { Input } from '@/components/ui/input'
@@ -33,11 +33,20 @@ export function GalleryManager({ onSave }: Props) {
   const [kidsPhotos, setKidsPhotos] = useState<PhotoItem[]>([])
   const [balletPhotos, setBalletPhotos] = useState<PhotoItem[]>([])
 
+  const fetchedRef = useRef<Set<GalleryKey>>(new Set())
+
+  // 선택한 카테고리만 최초 1회 fetch
   useEffect(() => {
-    fetchPhotoList('PROFILE').then(setProfilePhotos).catch(console.error)
-    fetchPhotoList('KIDS').then(setKidsPhotos).catch(console.error)
-    fetchPhotoList('BALLET').then(setBalletPhotos).catch(console.error)
-  }, [])
+    if (fetchedRef.current.has(category)) return
+    fetchedRef.current.add(category)
+
+    const setter =
+      category === 'KIDS' ? setKidsPhotos
+      : category === 'BALLET' ? setBalletPhotos
+      : setProfilePhotos
+
+    fetchPhotoList(category).then(setter).catch(console.error)
+  }, [category])
 
   const profile = useImageManager(profilePhotos)
   const kids = useImageManager(kidsPhotos)
@@ -60,9 +69,6 @@ export function GalleryManager({ onSave }: Props) {
     const newImages = manager.images
       .filter((img) => img.file !== undefined)
       .map((img) => img.file!)
-
-    console.log('newImages', newImages)
-    console.log('deleteImageIds', manager.deletedIds)
 
     onSave(key, { newImages, deleteImageIds: manager.deletedIds })
   }
