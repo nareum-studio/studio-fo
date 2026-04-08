@@ -6,7 +6,6 @@ export type NavItem = {
 }
 
 export const NAV: NavItem[] = [
-  { name: 'ABOUT', href: '/' },
   {
     name: 'PORTFOLIO',
     href: '/portfolio/profile',
@@ -17,6 +16,7 @@ export const NAV: NavItem[] = [
     ],
   },
   { name: 'ARTISTIC', href: '/artistic' },
+  { name: 'ABOUT', href: '/about' },
   { name: 'PRICE', href: '/price' },
   { name: 'CONTACT', href: '/contact' },
 ]
