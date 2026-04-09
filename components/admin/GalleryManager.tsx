@@ -24,9 +24,10 @@ import {
 
 type Props = {
   onSave: (section: GalleryKey, payload: SavePayload) => void
+  saving?: boolean
 }
 
-export function GalleryManager({ onSave }: Props) {
+export function GalleryManager({ onSave, saving = false }: Props) {
   const [category, setCategory] = useState<GalleryKey>('PROFILE')
 
   const [profilePhotos, setProfilePhotos] = useState<PhotoItem[]>([])
@@ -114,8 +115,9 @@ export function GalleryManager({ onSave }: Props) {
           size="sm"
           className="shrink-0 self-start sm:self-auto"
           onClick={handleSaveClick}
+          disabled={saving}
         >
-          {title} 저장
+          {saving ? '저장 중...' : `${title} 저장`}
         </Button>
       </div>
 

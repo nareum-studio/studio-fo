@@ -22,6 +22,7 @@ export default function AdminPage() {
   const [intro, setIntro] = useState('')
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
+  const [saving, setSaving] = useState(false)
 
   const handleIntroSave = () => {
     console.log('소개글 저장:', intro)
@@ -30,16 +31,21 @@ export default function AdminPage() {
   }
 
   const handleSave = async (section: GalleryKey, payload: SavePayload) => {
-    const { ok, message } = await updatePhotos(section, payload)
+    setSaving(true)
+    try {
+      const { ok, message } = await updatePhotos(section, payload)
 
-    if (!ok) {
-      setMessage(message || `저장 실패`)
+      if (!ok) {
+        setMessage(message || '저장 실패')
+        setOpen(true)
+        return
+      }
+
+      setMessage('사진이 저장되었습니다.')
       setOpen(true)
-      return
+    } finally {
+      setSaving(false)
     }
-
-    setMessage('사진이 저장되었습니다.')
-    setOpen(true)
   }
 
   return (
@@ -75,7 +81,7 @@ export default function AdminPage() {
               <CardTitle>사진 수정</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              <GalleryManager onSave={handleSave} />
+              <GalleryManager onSave={handleSave} saving={saving} />
             </CardContent>
           </Card>
         </TabsContent>
