@@ -1,11 +1,16 @@
 import { adminFetch } from '@/lib/adminFetch'
+import { GalleryKey, SavePayload } from '@/public/types/type'
 
-/**
- * @param {'PROFILE' | 'KIDS' | 'BALLET'} category
- * @param {{ newImages: File[], deleteImageIds: number[] }} payload
- * @returns {Promise<{ ok: boolean, status: number, message?: string }>}
- */
-export const updatePhotos = async (category, { newImages, deleteImageIds }) => {
+type UpdateResult = {
+  ok: boolean
+  status: number
+  message?: string
+}
+
+export const updatePhotos = async (
+  category: GalleryKey,
+  { newImages, deleteImageIds }: SavePayload,
+): Promise<UpdateResult> => {
   const formData = new FormData()
 
   newImages.forEach((file) => {

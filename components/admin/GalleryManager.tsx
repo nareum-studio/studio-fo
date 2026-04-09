@@ -32,6 +32,7 @@ export function GalleryManager({ onSave }: Props) {
   const [profilePhotos, setProfilePhotos] = useState<PhotoItem[]>([])
   const [kidsPhotos, setKidsPhotos] = useState<PhotoItem[]>([])
   const [balletPhotos, setBalletPhotos] = useState<PhotoItem[]>([])
+  const [artisticPhotos, setArtisticPhotos] = useState<PhotoItem[]>([])
 
   const fetchedRef = useRef<Set<GalleryKey>>(new Set())
 
@@ -41,9 +42,13 @@ export function GalleryManager({ onSave }: Props) {
     fetchedRef.current.add(category)
 
     const setter =
-      category === 'KIDS' ? setKidsPhotos
-      : category === 'BALLET' ? setBalletPhotos
-      : setProfilePhotos
+      category === 'KIDS'
+        ? setKidsPhotos
+        : category === 'BALLET'
+          ? setBalletPhotos
+          : category === 'ARTISTIC'
+            ? setArtisticPhotos
+            : setProfilePhotos
 
     fetchPhotoList(category).then(setter).catch(console.error)
   }, [category])
@@ -51,11 +56,13 @@ export function GalleryManager({ onSave }: Props) {
   const profile = useImageManager(profilePhotos)
   const kids = useImageManager(kidsPhotos)
   const ballet = useImageManager(balletPhotos)
+  const artistic = useImageManager(artisticPhotos)
 
   const sections: SectionConfig[] = [
     { key: 'PROFILE', title: 'PROFILE', manager: profile },
     { key: 'KIDS', title: 'KIDS', manager: kids },
     { key: 'BALLET', title: 'BALLET', manager: ballet },
+    { key: 'ARTISTIC', title: 'ARTISTIC', manager: artistic },
   ]
 
   const active = sections.find((s) => s.key === category) ?? sections[0]

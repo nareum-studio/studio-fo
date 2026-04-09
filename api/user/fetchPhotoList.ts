@@ -1,16 +1,12 @@
-/**
- * @type {Map<string, import('@/public/types/type').PhotoItem[]>}
- */
-const cache = new Map()
+import { GalleryKey, PhotoItem, PhotoListResponse } from '@/public/types/type'
 
-/**
- * @param {'PROFILE' | 'KIDS' | 'BALLET'} category
- * @returns {Promise<import('@/public/types/type').PhotoItem[]>}
- */
-export const fetchPhotoList = async (category) => {
+const cache = new Map<GalleryKey, PhotoItem[]>()
+
+export const fetchPhotoList = async (category: GalleryKey): Promise<PhotoItem[]> => {
   if (typeof window === 'undefined') return []
 
-  if (cache.has(category)) return cache.get(category)
+  const cached = cache.get(category)
+  if (cached) return cached
 
   const res = await fetch(`/user-api/image/list?category=${category}`, {
     method: 'GET',
@@ -22,14 +18,13 @@ export const fetchPhotoList = async (category) => {
     throw new Error(text || `이미지 목록 요청 실패 (${res.status})`)
   }
 
-  /** @type {import('@/public/types/type').PhotoListResponse} */
-  const json = await res.json()
+  const json: PhotoListResponse = await res.json()
   cache.set(category, json.data)
   return json.data
 }
 
 /** 캐시 초기화 (저장 후 최신 데이터가 필요할 때 호출) */
-export const clearPhotoCache = (category) => {
+export const clearPhotoCache = (category?: GalleryKey): void => {
   if (category) {
     cache.delete(category)
   } else {

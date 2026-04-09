@@ -1,4 +1,4 @@
-export type GalleryKey = 'PROFILE' | 'KIDS' | 'BALLET'
+export type GalleryKey = 'PROFILE' | 'KIDS' | 'BALLET' | 'ARTISTIC'
 
 // ── API 응답 타입 ─────────────────────────────────────────
 export type PhotoItem = {

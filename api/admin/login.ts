@@ -1,8 +1,14 @@
-/**
- * @param {{ id: string, password: string }} credentials
- * @returns {Promise<{ ok: boolean, message?: string }>}
- */
-export const loginAdmin = async ({ id, password }) => {
+type LoginCredentials = {
+  id: string
+  password: string
+}
+
+type LoginResult = {
+  ok: boolean
+  message?: string
+}
+
+export const loginAdmin = async ({ id, password }: LoginCredentials): Promise<LoginResult> => {
   const res = await fetch('/admin-api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -12,9 +18,9 @@ export const loginAdmin = async ({ id, password }) => {
 
   const text = await res.text()
 
-  let data
+  let data: { message?: string }
   try {
-    data = JSON.parse(text)
+    data = JSON.parse(text) as { message?: string }
   } catch {
     data = { message: text }
   }
