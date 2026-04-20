@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   AlertDialog,
@@ -14,21 +13,13 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { GalleryManager } from '../../components/admin/GalleryManager'
-import { IntroEditor } from '../../components/admin/IntroEditor'
 import { updatePhotos } from '@/api/admin/updatePhotos'
 import { GalleryKey, SavePayload } from '@/public/types/type'
 
 export default function AdminPage() {
-  const [intro, setIntro] = useState('')
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
   const [saving, setSaving] = useState(false)
-
-  const handleIntroSave = () => {
-    console.log('소개글 저장:', intro)
-    setMessage('소개글이 성공적으로 저장되었습니다.')
-    setOpen(true)
-  }
 
   const handleSave = async (section: GalleryKey, payload: SavePayload) => {
     setSaving(true)
@@ -52,42 +43,15 @@ export default function AdminPage() {
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">관리자 페이지</h1>
 
-      <Tabs defaultValue="intro" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="intro">소개글 수정</TabsTrigger>
-          <TabsTrigger value="photo">등록된 사진 수정</TabsTrigger>
-        </TabsList>
+      <Card>
+        <CardHeader>
+          <CardTitle>사진 수정</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <GalleryManager onSave={handleSave} saving={saving} />
+        </CardContent>
+      </Card>
 
-        {/* 소개글 수정 */}
-        <TabsContent value="intro">
-          <Card>
-            <CardHeader>
-              <CardTitle>소개글 수정</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <IntroEditor
-                intro={intro}
-                onChange={setIntro}
-                onSave={handleIntroSave}
-              />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* 사진 수정 — forceMount로 탭 이동 시 언마운트 방지 */}
-        <TabsContent value="photo" forceMount className="data-[state=inactive]:hidden">
-          <Card>
-            <CardHeader>
-              <CardTitle>사진 수정</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <GalleryManager onSave={handleSave} saving={saving} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-
-      {/* 저장 완료 Alert */}
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

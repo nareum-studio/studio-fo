@@ -16,15 +16,16 @@ export default function Artistic() {
   return (
     <div className="md:grid md:grid-cols-3 flex flex-col gap-4">
       {photos.map((photo) => (
-        <Image
-          key={photo.id}
-          src={photo.url}
-          alt={photo.originalName}
-          width={1000}
-          height={1000}
-          className="w-full h-full object-cover"
-          unoptimized
-        />
+        <div key={photo.id} className="aspect-2/3 overflow-hidden">
+          <Image
+            src={photo.url}
+            alt={photo.originalName}
+            width={1000}
+            height={1000}
+            className="w-full h-full object-cover"
+            unoptimized
+          />
+        </div>
       ))}
     </div>
   )

@@ -7,12 +7,12 @@ const nextConfig: NextConfig = {
       // 관리자 API
       {
         source: '/admin-api/:path*',
-        destination: 'http://54.180.79.241:8081/:path*',
+        destination: 'http://16.184.55.213:8081/:path*',
       },
       // 사용자 API
       {
         source: '/user-api/:path*',
-        destination: 'http://54.180.79.241:8082/:path*',
+        destination: 'http://16.184.55.213:8082/:path*',
       },
     ]
   },
