@@ -36,12 +36,12 @@ export default function Header() {
     <>
       <header
         className={`
-          fixed top-0 left-0 w-full bg-white/70 backdrop-blur z-50 border-b border-gray-200 md:h-[100px] h-[80px]
+          fixed top-0 left-0 w-full bg-white/70 backdrop-blur z-50 border-b border-gray-200 md:h-[100px] h-[80px] pl-[3%] pr-[3%]
           transition-transform duration-300
           ${hideHeader ? '-translate-y-full' : 'translate-y-0'}
         `}
       >
-        <div className="mx-auto flex items-center justify-between px-6 py-8 md:max-w-6xl h-full">
+        <div className="mx-auto flex items-center justify-between px-6 py-8 h-full">
           <Link href="/" className="text-xl font-bold font-French">
             NareumDaumm Studio
           </Link>
