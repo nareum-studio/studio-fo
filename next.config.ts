@@ -7,12 +7,12 @@ const nextConfig: NextConfig = {
       // 관리자 API
       {
         source: '/admin-api/:path*',
-        destination: 'http://16.184.55.213:8081/:path*',
+        destination: 'https://api.nareumdaumm.com/api/admin/:path*',
       },
       // 사용자 API
       {
         source: '/user-api/:path*',
-        destination: 'http://16.184.55.213:8082/:path*',
+        destination: 'https://api.nareumdaumm.com/api/:path*',
       },
     ]
   },

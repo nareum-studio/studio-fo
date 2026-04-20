@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/admin-api/:path*",
-      "destination": "http://16.184.55.213:8081/:path*"
+      "destination": "https://api.nareumdaumm.com/api/admin/:path*"
     },
     {
       "source": "/user-api/:path*",
-      "destination": "http://16.184.55.213:8082/:path*"
+      "destination": "https://api.nareumdaumm.com/api/:path*"
     }
   ]
 }
