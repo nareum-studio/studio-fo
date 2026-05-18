@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 import { Input } from '@/components/ui/input'
@@ -13,14 +13,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { fetchPhotoList } from '@/api/admin/fetchPhotoList'
 import { useImageManager } from '@/hooks/useImageManager'
-import {
-  GalleryKey,
-  PhotoItem,
-  SavePayload,
-  SectionConfig,
-} from '@/public/types/type'
+import { useAdminPhotoListQuery } from '@/hooks/useAdminPhotoListQuery'
+import { GalleryKey, SavePayload, SectionConfig } from '@/public/types/type'
 
 type Props = {
   onSave: (section: GalleryKey, payload: SavePayload) => void
@@ -30,34 +25,23 @@ type Props = {
 export function GalleryManager({ onSave, saving = false }: Props) {
   const [category, setCategory] = useState<GalleryKey>('PROFILE')
 
-  const [profilePhotos, setProfilePhotos] = useState<PhotoItem[]>([])
-  const [kidsPhotos, setKidsPhotos] = useState<PhotoItem[]>([])
-  const [balletPhotos, setBalletPhotos] = useState<PhotoItem[]>([])
-  const [artisticPhotos, setArtisticPhotos] = useState<PhotoItem[]>([])
+  const profileQuery = useAdminPhotoListQuery('PROFILE', {
+    enabled: category === 'PROFILE',
+  })
+  const kidsQuery = useAdminPhotoListQuery('KIDS', {
+    enabled: category === 'KIDS',
+  })
+  const balletQuery = useAdminPhotoListQuery('BALLET', {
+    enabled: category === 'BALLET',
+  })
+  const artisticQuery = useAdminPhotoListQuery('ARTISTIC', {
+    enabled: category === 'ARTISTIC',
+  })
 
-  const fetchedRef = useRef<Set<GalleryKey>>(new Set())
-
-  // 선택한 카테고리만 최초 1회 fetch
-  useEffect(() => {
-    if (fetchedRef.current.has(category)) return
-    fetchedRef.current.add(category)
-
-    const setter =
-      category === 'KIDS'
-        ? setKidsPhotos
-        : category === 'BALLET'
-          ? setBalletPhotos
-          : category === 'ARTISTIC'
-            ? setArtisticPhotos
-            : setProfilePhotos
-
-    fetchPhotoList(category).then(setter).catch(console.error)
-  }, [category])
-
-  const profile = useImageManager(profilePhotos)
-  const kids = useImageManager(kidsPhotos)
-  const ballet = useImageManager(balletPhotos)
-  const artistic = useImageManager(artisticPhotos)
+  const profile = useImageManager(profileQuery.data ?? [])
+  const kids = useImageManager(kidsQuery.data ?? [])
+  const ballet = useImageManager(balletQuery.data ?? [])
+  const artistic = useImageManager(artisticQuery.data ?? [])
 
   const sections: SectionConfig[] = [
     { key: 'PROFILE', title: 'PROFILE', manager: profile },

@@ -13,18 +13,21 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { GalleryManager } from '../../components/admin/GalleryManager'
-import { updatePhotos } from '@/api/admin/updatePhotos'
 import { GalleryKey, SavePayload } from '@/public/types/type'
+import { useUpdateAdminPhotos } from '@/hooks/useUpdateAdminPhotos'
 
 export default function AdminPage() {
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
-  const [saving, setSaving] = useState(false)
+  const mutation = useUpdateAdminPhotos()
 
   const handleSave = async (section: GalleryKey, payload: SavePayload) => {
-    setSaving(true)
+    if (mutation.isPending) return
     try {
-      const { ok, message } = await updatePhotos(section, payload)
+      const { ok, message } = await mutation.mutateAsync({
+        category: section,
+        payload,
+      })
 
       if (!ok) {
         setMessage(message || '저장 실패')
@@ -34,8 +37,10 @@ export default function AdminPage() {
 
       setMessage('사진이 저장되었습니다.')
       setOpen(true)
-    } finally {
-      setSaving(false)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : '저장 실패'
+      setMessage(msg)
+      setOpen(true)
     }
   }
 
@@ -48,7 +53,7 @@ export default function AdminPage() {
           <CardTitle>사진 수정</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
-          <GalleryManager onSave={handleSave} saving={saving} />
+          <GalleryManager onSave={handleSave} saving={mutation.isPending} />
         </CardContent>
       </Card>
 

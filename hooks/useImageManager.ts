@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { ImageItem, PhotoItem } from '@/public/types/type'
 
@@ -6,18 +6,22 @@ const toItems = (photos: PhotoItem[]): ImageItem[] =>
   photos.map((p) => ({ serverId: p.id, url: p.url }))
 
 export function useImageManager(initialPhotos: PhotoItem[] = []) {
-  const [prevPhotos, setPrevPhotos] = useState(initialPhotos)
   const [images, setImages] = useState<ImageItem[]>(() =>
     toItems(initialPhotos),
   )
   const [deletedIds, setDeletedIds] = useState<number[]>([])
 
-  // API 응답이 도착해 initialPhotos가 변경되면 동기화
-  if (prevPhotos !== initialPhotos) {
-    setPrevPhotos(initialPhotos)
+  // initialPhotos 내용이 실제로 변했을 때만 동기화
+  const signature = useMemo(
+    () => initialPhotos.map((p) => `${p.id ?? 'new'}:${p.url}`).join('|'),
+    [initialPhotos],
+  )
+
+  useEffect(() => {
     setImages(toItems(initialPhotos))
     setDeletedIds([])
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature])
 
   const addFiles = (fileList: FileList | null) => {
     if (!fileList) return

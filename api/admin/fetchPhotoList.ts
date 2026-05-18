@@ -1,7 +1,11 @@
 import { adminFetch } from '@/lib/adminFetch'
 import { GalleryKey, PhotoItem, PhotoListResponse } from '@/public/types/type'
 
-export const fetchPhotoList = async (category: GalleryKey): Promise<PhotoItem[]> => {
+export const adminPhotoListQueryKey = (category: GalleryKey) =>
+  ['admin', 'photos', category] as const
+export const fetchPhotoList = async (
+  category: GalleryKey,
+): Promise<PhotoItem[]> => {
   if (typeof window === 'undefined') return []
 
   const res = await adminFetch(`/admin-api/image/list?category=${category}`)
