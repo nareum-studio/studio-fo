@@ -15,7 +15,7 @@ export const NAV: NavItem[] = [
       { name: 'BALLET', href: '/portfolio/ballet' },
     ],
   },
-  { name: 'ARTISTIC', href: '/artistic' },
+  // { name: 'ARTISTIC', href: '/artistic' },
   { name: 'ABOUT', href: '/about' },
   { name: 'PRICE', href: '/price' },
   { name: 'CONTACT', href: '/contact' },
