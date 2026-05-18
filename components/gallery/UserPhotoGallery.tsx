@@ -1,9 +1,9 @@
 'use client'
 
-import { SyntheticEvent, useEffect, useState } from 'react'
+import { SyntheticEvent } from 'react'
 import Image from 'next/image'
 
-import { fetchPhotoList } from '@/api/user/fetchPhotoList'
+import { usePhotoListQuery } from '@/hooks/usePhotoListQuery'
 import { GalleryKey, PhotoItem } from '@/public/types/type'
 
 type UserPhotoGalleryProps = {
@@ -11,14 +11,11 @@ type UserPhotoGalleryProps = {
 }
 
 export const UserPhotoGallery = ({ category }: UserPhotoGalleryProps) => {
-  const [photos, setPhotos] = useState<PhotoItem[]>([])
+  const { data } = usePhotoListQuery(category)
+  const photos: PhotoItem[] = data ?? []
   const handlePreventImageCopy = (event: SyntheticEvent) => {
     event.preventDefault()
   }
-
-  useEffect(() => {
-    fetchPhotoList(category).then(setPhotos).catch(console.error)
-  }, [category])
 
   return (
     <div className="md:grid md:grid-cols-3 flex flex-col gap-4">
