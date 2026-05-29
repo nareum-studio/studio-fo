@@ -19,7 +19,7 @@ export const UserPhotoGallery = ({ category }: UserPhotoGalleryProps) => {
 
   return (
     <div className="md:grid md:grid-cols-3 flex flex-col gap-4">
-      {photos.map((photo) => (
+      {photos.map((photo, index) => (
         <div
           key={photo.id}
           className="aspect-2/3 overflow-hidden select-none pointer-events-auto"
@@ -30,10 +30,11 @@ export const UserPhotoGallery = ({ category }: UserPhotoGalleryProps) => {
             src={photo.url}
             alt={photo.originalName}
             width={1000}
-            height={1000}
+            height={1500}
+            sizes="(min-width: 768px) 33vw, 100vw"
+            priority={index < 3}
             className="w-full h-full object-cover"
             draggable={false}
-            unoptimized
           />
         </div>
       ))}

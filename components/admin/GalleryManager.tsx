@@ -133,8 +133,9 @@ export function GalleryManager({ onSave, saving = false }: Props) {
                   src={img.url}
                   alt={`${title} 이미지 ${idx + 1}`}
                   fill
+                  sizes="(min-width: 768px) 15vw, (min-width: 640px) 25vw, 50vw"
+                  unoptimized={img.url.startsWith('blob:')}
                   className="object-contain"
-                  unoptimized
                 />
               </div>
             </div>

@@ -18,7 +18,18 @@ const nextConfig: NextConfig = {
   },
 
   images: {
-    domains: ['nareum-bucket.s3.ap-northeast-2.amazonaws.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'd3l8r3t1t3hpx6.cloudfront.net',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'nareum-bucket.s3.ap-northeast-2.amazonaws.com',
+        pathname: '/**',
+      },
+    ],
   },
 }
 
