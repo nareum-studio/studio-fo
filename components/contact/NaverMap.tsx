@@ -5,8 +5,9 @@ import { useEffect, useRef, useState } from 'react'
 
 const CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
 
-// 주소 → 좌표는 Geocoder로 찾거나, 미리 구한 lat/lng를 상수로 둠
+const STUDIO_ADDRESS = '나름다움스튜디오'
 const DEFAULT_CENTER = { lat: 37.477952, lng: 127.037186 }
+const NAVER_MAP_PLACE_URL = `https://map.naver.com/v5/search/${encodeURIComponent(STUDIO_ADDRESS)}`
 
 export const NaverMap = () => {
   const mapRef = useRef<HTMLDivElement>(null)
@@ -20,7 +21,18 @@ export const NaverMap = () => {
       center,
       zoom: 16,
     })
-    new naver.maps.Marker({ position: center, map })
+    const marker = new naver.maps.Marker({
+      position: center,
+      map,
+      title: '네이버 지도에서 위치 보기',
+    })
+    const listener = naver.maps.Event.addListener(marker, 'click', () => {
+      window.open(NAVER_MAP_PLACE_URL, '_blank', 'noopener,noreferrer')
+    })
+
+    return () => {
+      naver.maps.Event.removeListener(listener)
+    }
   }, [scriptReady])
 
   if (!CLIENT_ID) {

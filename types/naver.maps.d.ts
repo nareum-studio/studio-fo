@@ -25,10 +25,20 @@ declare global {
       interface MarkerOptions {
         position: LatLng
         map?: Map
+        title?: string
       }
 
       class Marker {
         constructor(options: MarkerOptions)
+      }
+
+      namespace Event {
+        function addListener(
+          target: Marker,
+          eventName: 'click',
+          listener: () => void,
+        ): unknown
+        function removeListener(listener: unknown): void
       }
     }
   }
