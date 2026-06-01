@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { NaverMap } from '@/components/contact/NaverMap'
 
 export default function Contact() {
   return (
@@ -7,6 +8,7 @@ export default function Contact() {
       <div className="flex flex-col items-center justify-center">
         <span className="text-xl">LOCATION</span>
         <span className="mt-4">서울 서초구 바우뫼로33길 7-8 4층</span>
+        <NaverMap />
       </div>
       <p>-</p>
       <div className="flex flex-col items-center justify-center">

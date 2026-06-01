@@ -1,0 +1,39 @@
+/**
+ * Naver Maps JavaScript API v3 (maps.js) — minimal types for this project.
+ * @see https://navermaps.github.io/maps.js.ncp/docs/
+ */
+export {}
+
+declare global {
+  namespace naver {
+    namespace maps {
+      class LatLng {
+        constructor(lat: number, lng: number)
+        lat(): number
+        lng(): number
+      }
+
+      interface MapOptions {
+        center: LatLng
+        zoom?: number
+      }
+
+      class Map {
+        constructor(element: HTMLElement, options: MapOptions)
+      }
+
+      interface MarkerOptions {
+        position: LatLng
+        map?: Map
+      }
+
+      class Marker {
+        constructor(options: MarkerOptions)
+      }
+    }
+  }
+
+  interface Window {
+    naver?: typeof naver
+  }
+}
